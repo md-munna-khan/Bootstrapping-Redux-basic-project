@@ -102,3 +102,33 @@ const employee2=produce(employee,draft=>{
 console.log(employee)
 console.log(employee2)
 ```
+## 22-3 Function Currying
+
+```js
+//currying/ function curry
+
+// Normal Function
+// const add = (a, b) => a + b;
+
+// curried
+const add = (a) =>(b)=> a + b;
+```
+- problem maximum time call output
+```js
+// normal function
+const totalPrice = (amount,discount)=> amount - amount * discount;
+
+
+console.log(totalPrice(100,0.3))
+console.log(totalPrice(300,0.3))
+console.log(totalPrice(500,0.3))
+// curring function
+const totalPrice = (discount) => (amount) => amount - amount * discount;
+
+const withDiscount = totalPrice(0.3)
+console.log(withDiscount(100))
+console.log(withDiscount(200))
+
+```
+
+![alt text](image-5.png)
