@@ -1,23 +1,15 @@
-// Pure Function
-
-const add = (a, b) => a + b;
-// console.log(add(1, 4));
-// console.log(add(1, 4));
-// console.log(add(1, 4));
-
-// impure Function
-// let total = 0; // maybe others function depended in total
-// const addTotal = (amount) => (total = total + amount);
-// console.log(addTotal(4));
-
-// this is also impure function because every second he update it
-const updateDate = () =>{
-    new Date();
+import {produce} from "immer"
+const employee={
+    name:"Munna",
+    address:{
+        country:"Bangladesh",
+        city:"Dhaka"
+    }
 }
 
-const randomNumber = (amount)=>{
-return amount + Math.random()
-}
-console.log(randomNumber(3))
-console.log(randomNumber(3))
-console.log(randomNumber(3))
+
+const employee2=produce(employee,draft=>{
+    draft.name="sollu"
+})
+console.log(employee)
+console.log(employee2)
