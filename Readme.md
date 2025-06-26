@@ -37,3 +37,68 @@ console.log(randomNumber(3))
 console.log(randomNumber(3))
 ```
 ![alt text](image.png)
+
+## 22-2 Understanding mutation and ways to avoid it.
+- mutation mean change to  real situation
+![alt text](image.png)
+- the problem is when i update employee2.name also update employee name
+```js
+const employee={
+    name:"Munna",
+    address:{
+        country:"Bangladesh",
+        city:"Dhaka"
+    }
+}
+
+const employee2 = employee;
+employee2.name = "Sazid"
+console.log(employee)
+console.log(employee2)
+//{ name: 'Sazid', address: { country: 'Bangladesh', city: 'Dhaka' } }
+//{name: 'Sazid', address: { country: 'Bangladesh', city: 'Dhaka' } }
+```
+- solution is spread operator
+```js
+const employee={
+    name:"Munna",
+    address:{
+        country:"Bangladesh",
+        city:"Dhaka"
+    }
+}
+
+
+const employee2={
+...employee,
+name:"sazid",
+
+}
+console.log(employee)
+console.log(employee2)
+// { name: 'Munna', address: { country: 'Bangladesh', city: 'Dhaka' } }
+// { name: 'sazid', address: { country: 'Bangladesh', city: 'Dhaka' } }
+```
+- data mutation problem
+![alt text](image-2.png)
+- solution 
+![alt text](image-3.png) 
+- redux behind the seen use immer for manage mutation
+![alt text](image-4.png)
+```js
+import {produce} from "immer"
+const employee={
+    name:"Munna",
+    address:{
+        country:"Bangladesh",
+        city:"Dhaka"
+    }
+}
+
+
+const employee2=produce(employee,draft=>{
+    draft.name="sollu"
+})
+console.log(employee)
+console.log(employee2)
+```
