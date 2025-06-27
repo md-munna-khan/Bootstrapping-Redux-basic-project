@@ -164,3 +164,87 @@ const logger = (state) => (next) => (action) => {
 };
 export default logger;
 ```
+## 22-5 Initializing Shadcn UI
+![alt text](image-7.png)
+https://ui.shadcn.com/docs/installation/vite
+
+ follow shadcn official Document for installation
+
+## 22-6 Configure basic routing using react-router-dom
+ we are react router dom Data
+ **1 step**  
+ ![alt text](image-8.png)
+ **2 step**  
+ ![alt text](image-9.png)
+  **3 step**  
+ ![alt text](image-10.png)
+ if i add in index true he is by default show this page when i open main server
+ ![alt text](image-11.png)
+
+path Handeling
+
+ ```js
+ import App from "@/App";
+import Task from "@/pages/Task";
+import User from "@/pages/User";
+import { createBrowserRouter } from "react-router";
+
+const router = createBrowserRouter([
+    {
+        path:"/",
+        element:<App/>,
+        children:[
+            {
+                path:"users",
+                Component:User
+            },
+            {
+                index:true,
+                // path:"tasks",
+                Component:Task
+            },
+            {
+                
+                path:"tasks",
+                Component:Task
+            },
+        ]
+    }
+])
+export default router
+```
+Route Render
+```js
+import React from 'react'
+import { Link } from 'react-router'
+
+export default function Navbar() {
+  return (
+    <div className='p-8'>
+     <div> This is navbar</div>
+      <button className='p-4'><Link to="/tasks">Tasks</Link></button>
+      <button><Link to="/users">Users</Link></button>
+    </div>
+  )
+}
+
+```
+
+path children call
+
+```js
+import { Outlet } from "react-router"
+import Navbar from "./components/layout/Navbar"
+
+
+const App = () => {
+  return (
+    <div>
+      <Navbar></Navbar>
+      <Outlet></Outlet>
+    </div>
+  )
+}
+
+export default App
+```
