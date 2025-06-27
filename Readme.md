@@ -132,3 +132,35 @@ console.log(withDiscount(200))
 ```
 
 ![alt text](image-5.png)
+
+## 22-4 Redux middleware basics
+![alt text](image-6.png)
+- middleware redux by default some middleware add in there project and i am also add my logger middleware
+```js
+
+import { configureStore } from "@reduxjs/toolkit";
+import counterReducer from "./features/counter/counterSlice"
+import logger from "./middlewares/logger";
+export const store = configureStore({
+  reducer: {
+    counter:counterReducer
+  },
+middleware:(getDefaultMiddleware)=>getDefaultMiddleware().concat(logger)
+});
+
+export type RootState =ReturnType<typeof store.getState>;
+export type AppDispatch =typeof store.dispatch;
+```
+you custom create logger Middleware for Debugging and others check
+
+```js
+const logger = (state) => (next) => (action) => {
+  console.group(action.type);
+  console.log("prev state",state.getState());
+  const result = next(action);
+  console.log("Next State",state.getState())
+  console.groupEnd()
+  return result
+};
+export default logger;
+```
