@@ -759,3 +759,122 @@ export function AddTaskModal() {
 }
 
 ```
+## 22-12 Handle form inputs and resolve warnings and errors.
+
+- handling some warnings 
+- AddTaskModal.tsx
+```tsx
+import { Button } from "@/components/ui/button"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { useForm } from "react-hook-form"
+
+
+
+export function AddTaskModal() {
+    const form = useForm()
+
+    const onSubmit = (data) => {
+        console.log(data)
+    }
+
+    return (
+        <Dialog>
+            <form>
+                <DialogTrigger asChild>
+                    <Button >Add Task</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogDescription className="sr-only">Fill up This task Form to add task</DialogDescription>
+                    {/* sr-only means only the screen reader can read but this will not be visible. */}
+                    <DialogHeader>
+                        <DialogTitle>Add Task</DialogTitle>
+                    </DialogHeader>
+                    {/* changed the form */}
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)}>
+                            <FormField
+                                control={form.control}
+                                name="title"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Title</FormLabel>
+                                        <FormControl>
+                                            <Input  {...field} value={field.value || ""} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="description"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Description</FormLabel>
+                                        <FormControl>
+                                            <Textarea {...field} value={field.value || ""} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <DialogFooter className="mt-4">
+                                <Button type="submit">Save changes</Button>
+                            </DialogFooter>
+                        </form>
+
+
+                    </Form>
+                </DialogContent>
+            </form>
+        </Dialog>
+    )
+}
+
+```
+
+- Task.tsx
+
+```tsx
+import { AddTaskModal } from "@/module/AddTaskModal"
+import TaskCard from "@/module/TaskCard"
+import { selectFilter, selectTasks } from "@/redux/features/task/taskSlice"
+import { useAppSelector } from "@/redux/hooks"
+
+export default function Task() {
+    // const tasks = useAppSelector((state) => state.todo.tasks)
+
+    // we can do this more efficient way by grabbing the tasks inside task slice
+
+    const tasks = useAppSelector(selectTasks)
+    const filter = useAppSelector(selectFilter)
+
+    console.log(tasks)
+    console.log(filter)
+
+
+    return (
+        <div className="mx-auto max-w-7xl px-5 mt-20">
+            <div className="flex justify-between items-center">
+                <h1>Tasks</h1>
+                <AddTaskModal />
+            </div>
+
+            <div className="space-y-5 mt-5">
+                {tasks.map((task) => (<TaskCard task={task} key={task.id} />))}
+            </div>
+
+        </div>
+    )
+}
+
+```

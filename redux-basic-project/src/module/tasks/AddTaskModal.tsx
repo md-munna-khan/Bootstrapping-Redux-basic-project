@@ -45,7 +45,7 @@ export function AddTaskModal() {
                   <FormItem>
                     <FormLabel />
                     <FormControl>
-                      <Input {...field} />
+                      <Input {...field} value={field.value} />
                     </FormControl>
                   </FormItem>
                 )}
