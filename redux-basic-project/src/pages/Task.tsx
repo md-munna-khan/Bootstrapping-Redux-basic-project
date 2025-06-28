@@ -1,4 +1,6 @@
 
+
+import { AddTaskModal } from "@/module/tasks/AddTaskModal";
 import TaskCard from "@/module/tasks/TaskCard";
 import { selectFilter, selectTasks } from "@/redux/features/counter/task/taskSlice";
 import { useAppSelector } from "@/redux/hook"
@@ -11,8 +13,10 @@ export default function Task() {
   console.log(filter)
   return (
     <div>
-   <div>
-       <h1>Tasks</h1>
+      <h1>Tasks</h1>
+   <div className="flex justify-center">
+       
+       <AddTaskModal/>
    </div>
   {
     task.map(task=><TaskCard task={task}/>)
