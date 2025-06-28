@@ -22,7 +22,7 @@ const initialState :InitialState={
         description:"Create Home page",
         duaDate:"2025-12",
         isCompleted:false,
-        priority:"High"
+        priority:"Low"
    
 }],
 filter:"all" };

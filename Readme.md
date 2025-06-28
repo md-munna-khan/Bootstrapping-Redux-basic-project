@@ -586,3 +586,104 @@ export default function Task() {
 }
 
 ```
+## 22-10 create card view for task
+
+```ts
+import { clsx, type ClassValue } from "clsx"
+import { twMerge } from "tailwind-merge"
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+
+```
+- Shadcn uses tailwind merge and clsx inside utils. lib->utils.
+- Tailwind merge basically merges lot of tailwind classes [Tailwind Merge](https://www.npmjs.com/package/tailwind-merge). we can directly merge the tailwind so we use tailwind merge. 
+- CLSX allows to functionally write class. [CLSX](https://www.npmjs.com/package/clsx)
+- we can dynamically wrap the class with clsx cn 
+```tsx
+<div className={cn("size-3 rounded-full", {
+    "bg-green-500": task.priority === "Low",
+    "bg-yellow-500": task.priority === "Medium",
+    "bg-red-600": task.priority === "High"
+})}>
+
+```
+
+- Here CLSX is used alternative of template string because sometimes this causes specificity issues. CLSX is more robust. 
+- Styling inside clsx is then merged by tailwind merge. 
+
+- taskCard.tsx
+
+```tsx 
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
+import type { ITask } from "@/types";
+
+import { Trash2 } from "lucide-react";
+
+interface IProps {
+    task: ITask;
+}
+export default function TaskCard({ task }: IProps) {
+    return (
+        <div className="border px-5 py-3 rounded-md container ">
+            <div className="flex justify-between items-center">
+                <div className="flex gap-2 items-center">
+                    {/* clsx used here  */}
+                    <div className={cn("size-3 rounded-full", {
+                        "bg-green-500": task.priority === "Low",
+                        "bg-yellow-500": task.priority === "Medium",
+                        "bg-red-600": task.priority === "High"
+                    })}>
+
+                    </div>
+                    <h1>{task.title}</h1>
+                </div>
+                <div className="flex gap-3 items-center">
+                    <Button variant="link" className="p-0 text-red-500">
+                        <Trash2 />
+                    </Button>
+                    <Checkbox />
+                </div>
+            </div>
+            <p className="mt-5">{task.description}</p>
+        </div>
+    );
+}
+
+```
+
+- task.tsx
+
+```tsx
+import TaskCard from "@/module/TaskCard"
+import { selectFilter, selectTasks } from "@/redux/features/task/taskSlice"
+import { useAppSelector } from "@/redux/hooks"
+
+export default function Task() {
+    // const tasks = useAppSelector((state) => state.todo.tasks)
+
+    // we can do this more efficient way by grabbing the tasks inside task slice
+
+    const tasks = useAppSelector(selectTasks)
+    const filter = useAppSelector(selectFilter)
+
+    console.log(tasks)
+    console.log(filter)
+
+
+    return (
+        <div className="mx-auto max-w-7xl px-5 mt-20">
+            <div>
+                Tasks
+            </div>
+            <div className="space-y-5 mt-5">
+                {tasks.map((task) => (<TaskCard task={task} />))}
+            </div>
+        </div>
+    )
+}
+
+```
