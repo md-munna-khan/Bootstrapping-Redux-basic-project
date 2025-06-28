@@ -427,3 +427,81 @@ export default function Navbar() {
 }
 
 ```
+## 22-8 Initiate todo slice and initial state.
+- src -> types.ts
+
+```ts
+export interface ITask {
+    id: string
+    title: string
+    description: string
+    dueDate: string
+    isCompleted: boolean
+    priority: "High" | "Medium" | "Low"
+}
+```
+
+- taskSlice.ts 
+
+```ts 
+import type { ITask } from "@/types";
+import { createSlice } from "@reduxjs/toolkit";
+
+// make a type 
+
+interface InitialState {
+    tasks: ITask[]
+}
+// this is giving a vibe of schema. 
+const initialState: InitialState = {
+    tasks: [
+        {
+            id: "dskdjsdks",
+            title: "Initialize Frontend",
+            description: "Create Homepage and Routing",
+            dueDate: "2025-11",
+            isCompleted: false,
+            priority: "High"
+        },
+        {
+            id: "euryeur",
+            title: "Create Github Repo",
+            description: "Make the proper commits ",
+            dueDate: "2025-11",
+            isCompleted: false,
+            priority: "High"
+        }
+    ]
+}
+const taskSlice = createSlice({
+    name: "task",
+    initialState,
+    reducers: {}
+})
+
+export default taskSlice.reducer
+
+
+
+```
+
+- store.ts 
+
+```ts 
+import { configureStore } from '@reduxjs/toolkit'
+import counterReducer from "./features/counter/counterSlice"
+
+import taskReducer from "./features/task/taskSlice"
+
+export const store = configureStore({
+    reducer: {
+        counter: counterReducer,
+        todo: taskReducer
+    }
+})
+
+export type RootState = ReturnType<typeof store.getState>
+
+export type AppDispatch = typeof store.dispatch
+
+```
